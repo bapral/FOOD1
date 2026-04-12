@@ -111,8 +111,16 @@ function updateUI() {
         'MANUAL_WAIT': '手動選點模式(請點選位置)',
         'LOCKED': '手動選點模式(已鎖定)'
     };
-    if (UI.status) UI.status.innerText = texts[currentState];
-    UI.map.style.cursor = currentState === 'MANUAL_WAIT' ? 'crosshair' : '';
+    if (UI.status) {
+        UI.status.innerText = texts[currentState];
+        // Toggle specific style for MANUAL_WAIT
+        if (currentState === 'MANUAL_WAIT') {
+            UI.status.classList.add('waiting-state');
+        } else {
+            UI.status.classList.remove('waiting-state');
+        }
+    }
+    if (UI.map) UI.map.style.cursor = currentState === 'MANUAL_WAIT' ? 'crosshair' : '';
 }
 
 UI.btnLocate.addEventListener('click', () => {
