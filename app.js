@@ -150,18 +150,43 @@ function showDetails(item, shouldFitBounds = true) {
     UI.panel.classList.remove('hidden');
     setTimeout(() => UI.panel.classList.add('visible'), 10);
 
-    // Draw Navigation Line from "Active" coordinates
+    // Draw Navigation Line with Dual-Layer Glow (TOILETS Style)
     if (activeCoords && item.lat) {
         if (polyline) map.removeLayer(polyline);
-        polyline = L.polyline([activeCoords, [item.lat, item.lng]], {
+        
+        // Group multiple lines into one layer group for easier removal
+        polyline = L.layerGroup().addTo(map);
+
+        const latlngs = [activeCoords, [item.lat, item.lng]];
+
+        // 1. Bottom Layer: Wide Glow
+        L.polyline(latlngs, {
             color: '#192a56',
-            weight: 5,
+            weight: 10,
+            opacity: 0.3,
+            lineCap: 'round'
+        }).addTo(polyline);
+
+        // 2. Middle Layer: Main Stroke
+        L.polyline(latlngs, {
+            color: '#192a56',
+            weight: 4,
             opacity: 0.8,
-            dashArray: '10, 10'
-        }).addTo(map);
+            dashArray: '10, 15',
+            lineCap: 'round'
+        }).addTo(polyline);
+
+        // 3. Top Layer: Core Glow (Inner light)
+        L.polyline(latlngs, {
+            color: '#fbc531',
+            weight: 2,
+            opacity: 0.5,
+            lineCap: 'round'
+        }).addTo(polyline);
         
         if (shouldFitBounds) {
-            map.fitBounds(polyline.getBounds(), { padding: [100, 100] });
+            const bounds = L.latLngBounds(latlngs);
+            map.fitBounds(bounds, { padding: [100, 100] });
         }
     }
 }
