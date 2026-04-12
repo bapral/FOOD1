@@ -54,18 +54,26 @@ function startLocationWatch() {
     }
 }
 
+function createPinIcon(color) {
+    const iconHtml = `
+        <div style="filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));">
+            <svg viewBox="0 0 24 24" width="36" height="36">
+                <path fill="${color}" stroke="white" stroke-width="1.5" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+        </div>`;
+    return L.divIcon({
+        className: 'custom-pin',
+        html: iconHtml,
+        iconSize: [36, 36],
+        iconAnchor: [18, 36]
+    });
+}
+
 function updateVisualMarkers() {
-    // 1. Handle Red GPS Dot (User Marker)
+    // 1. Handle Red GPS Pin (Auto Mode)
     if (userCoords && currentState === 'AUTO_GPS') {
         if (!userMarker) {
-            userMarker = L.circleMarker(userCoords, {
-                radius: 10,
-                fillColor: "#EE5253",
-                color: "white",
-                weight: 3,
-                opacity: 1,
-                fillOpacity: 1
-            }).addTo(map);
+            userMarker = L.marker(userCoords, { icon: createPinIcon('#EE5253') }).addTo(map);
         } else {
             userMarker.setLatLng(userCoords).addTo(map);
         }
@@ -73,17 +81,10 @@ function updateVisualMarkers() {
         map.removeLayer(userMarker);
     }
 
-    // 2. Handle Blue Manual Pin
+    // 2. Handle Blue Manual Pin (Locked Mode)
     if (activeCoords && currentState === 'LOCKED') {
         if (!manualMarker) {
-            manualMarker = L.marker(activeCoords, {
-                icon: L.divIcon({
-                    className: 'manual-pin',
-                    html: '<div style="font-size: 30px; margin-top: -20px;">📍</div>',
-                    iconSize: [30, 30],
-                    iconAnchor: [15, 5]
-                })
-            }).addTo(map);
+            manualMarker = L.marker(activeCoords, { icon: createPinIcon('#192a56') }).addTo(map);
         } else {
             manualMarker.setLatLng(activeCoords).addTo(map);
         }
