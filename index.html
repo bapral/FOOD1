@@ -13,17 +13,22 @@
     <div id="map"></div>
     
     <div id="ui-overlay">
-        <div class="top-bar">
-            <h1>ALMA FOOD MAP</h1>
-            <div id="status-badge" class="badge">GPS</div>
+        <div id="top-header" class="top-bar clickable">
+            <div class="title-group">
+                <h1>ALMA FOOD MAP</h1>
+                <span class="sub-title">點此手動定位</span>
+            </div>
+            <div id="status-display" class="status-text">自動 GPS 定位</div>
         </div>
         
         <div class="controls">
+            <!-- 導航至最近目標 (箭頭) -->
+            <button id="btn-nearest" title="最近目標">
+                <svg viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+            </button>
+            <!-- 自動 GPS 定位 (準星) -->
             <button id="btn-locate" title="自動定位">
                 <svg viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
-            </button>
-            <button id="btn-manual" title="手動選點">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="2"/></svg>
             </button>
         </div>
 
@@ -31,7 +36,12 @@
             <div class="drag-handle"></div>
             <div class="panel-content">
                 <h2 id="store-name">店名</h2>
-                <p id="store-address" class="address">地址</p>
+                <div class="stats">
+                    <span id="store-distance">0.0 km</span>
+                    <span class="separator">|</span>
+                    <span id="store-time">約 0 分鐘</span>
+                </div>
+                <p id="store-address" class="address selectable">地址</p>
                 <div class="store-details">
                     <span id="store-hours">營業時間</span>
                 </div>
