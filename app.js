@@ -131,8 +131,8 @@ function updateUI() {
         'MANUAL_WAIT': '手動模式(請點選位置)',
         'LOCKED': '手動模式(已鎖定)'
     };
-    UI.status.innerText = texts[currentState];
-    UI.map.style.cursor = currentState === 'MANUAL_WAIT' ? 'crosshair' : '';
+    if (UI.status) UI.status.innerText = texts[currentState];
+    if (UI.map) UI.map.style.cursor = currentState === 'MANUAL_WAIT' ? 'crosshair' : '';
 }
 
 UI.btnLocate.addEventListener('click', () => {
