@@ -172,4 +172,12 @@ UI.btnManualTop.addEventListener('click', () => {
     updateVisualMarkers();
 });
 
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker 註冊成功'))
+            .catch(err => console.log('Service Worker 註冊失敗:', err));
+    });
+}
+
 window.onload = initMap;
