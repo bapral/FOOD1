@@ -15,7 +15,7 @@ const UI = {
 
 function initMap() {
     map = L.map('map', { zoomControl: false, attributionControl: false }).setView([23.6, 121], 7);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
     map.on('click', onMapClick);
     fetch('food_data.json').then(res => res.json()).then(data => { foodData = data; renderMarkers(); });
     startLocationWatch();
