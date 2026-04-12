@@ -1,17 +1,18 @@
-let map, userMarker, targetMarker, polyline;
+let map, userMarker, manualMarker, polyline;
 let foodData = [];
-let currentState = 'AUTO_GPS'; // AUTO_GPS, MANUAL_SELECT, LOCKED
-let userCoords = null;
+let currentState = 'AUTO_GPS'; // AUTO_GPS, MANUAL_WAIT, LOCKED
+let userCoords = null; // Real GPS coords
+let activeCoords = null; // The coords used for distance/navigation
 
 const UI = {
     badge: document.getElementById('status-badge'),
     panel: document.getElementById('info-panel'),
     btnLocate: document.getElementById('btn-locate'),
-    btnManual: document.getElementById('btn-manual')
+    btnManual: document.getElementById('btn-manual'),
+    map: document.getElementById('map')
 };
 
 function initMap() {
-    // Default to Taiwan center
     map = L.map('map', {
         zoomControl: false,
         attributionControl: false
@@ -23,7 +24,6 @@ function initMap() {
 
     map.on('click', onMapClick);
     
-    // Load Data
     fetch('food_data.json')
         .then(res => res.json())
         .then(data => {
@@ -40,10 +40,13 @@ function startLocationWatch() {
             (pos) => {
                 const { latitude, longitude } = pos.coords;
                 userCoords = [latitude, longitude];
-                updateUserMarker(userCoords);
+                
+                // Only update activeCoords if in Auto GPS mode
                 if (currentState === 'AUTO_GPS') {
+                    activeCoords = userCoords;
                     map.setView(userCoords, 16);
                 }
+                updateVisualMarkers();
             },
             (err) => console.error("GPS Error:", err),
             { enableHighAccuracy: true }
@@ -51,44 +54,56 @@ function startLocationWatch() {
     }
 }
 
-function updateUserMarker(coords) {
-    if (!userMarker) {
-        userMarker = L.circleMarker(coords, {
-            radius: 8,
-            fillColor: "#EE5253",
-            color: "white",
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 1
-        }).addTo(map);
-    } else {
-        userMarker.setLatLng(coords);
+function updateVisualMarkers() {
+    // 1. Handle Red GPS Dot (User Marker)
+    if (userCoords && currentState === 'AUTO_GPS') {
+        if (!userMarker) {
+            userMarker = L.circleMarker(userCoords, {
+                radius: 10,
+                fillColor: "#EE5253",
+                color: "white",
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 1
+            }).addTo(map);
+        } else {
+            userMarker.setLatLng(userCoords).addTo(map);
+        }
+    } else if (userMarker) {
+        map.removeLayer(userMarker);
+    }
+
+    // 2. Handle Blue Manual Pin
+    if (activeCoords && currentState === 'LOCKED') {
+        if (!manualMarker) {
+            manualMarker = L.marker(activeCoords, {
+                icon: L.divIcon({
+                    className: 'manual-pin',
+                    html: '<div style="font-size: 30px; margin-top: -20px;">📍</div>',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 5]
+                })
+            }).addTo(map);
+        } else {
+            manualMarker.setLatLng(activeCoords).addTo(map);
+        }
+    } else if (manualMarker) {
+        map.removeLayer(manualMarker);
     }
 }
 
-function renderMarkers() {
-    const foodIconSvg = `<svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>`;
-    
-    foodData.forEach(item => {
-        if (item.lat && item.lng) {
-            const marker = L.marker([item.lat, item.lng], {
-                icon: L.divIcon({
-                    className: 'food-marker-icon',
-                    html: foodIconSvg,
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 12]
-                })
-            }).addTo(map);
-
-            marker.on('click', () => showDetails(item));
-        }
-    });
+function onMapClick(e) {
+    if (currentState === 'MANUAL_WAIT') {
+        activeCoords = [e.latlng.lat, e.latlng.lng];
+        currentState = 'LOCKED';
+        updateBadge();
+        updateVisualMarkers();
+        // Calculate nearest if needed, or just lock
+    }
 }
 
 function showDetails(item) {
-    currentState = 'LOCKED';
-    updateBadge();
-    
+    // When clicking a store, we lock the view but keep the current positioning mode
     document.getElementById('store-name').innerText = item.name;
     document.getElementById('store-address').innerText = item.address;
     document.getElementById('store-hours').innerText = item.hours || "暫無營業時間";
@@ -98,10 +113,10 @@ function showDetails(item) {
     UI.panel.classList.remove('hidden');
     setTimeout(() => UI.panel.classList.add('visible'), 10);
 
-    // Draw Navigation Line (Matching TOILETS style: bright and dashed)
-    if (userCoords && item.lat) {
+    // Draw Navigation Line from "Active" coordinates
+    if (activeCoords && item.lat) {
         if (polyline) map.removeLayer(polyline);
-        polyline = L.polyline([userCoords, [item.lat, item.lng]], {
+        polyline = L.polyline([activeCoords, [item.lat, item.lng]], {
             color: '#192a56',
             weight: 5,
             opacity: 0.8,
@@ -112,29 +127,30 @@ function showDetails(item) {
     }
 }
 
-function onMapClick(e) {
-    if (currentState === 'MANUAL_SELECT') {
-        userCoords = [e.latlng.lat, e.latlng.lng];
-        updateUserMarker(userCoords);
-        currentState = 'LOCKED';
-        updateBadge();
-    }
-}
-
 function updateBadge() {
-    UI.badge.innerText = currentState;
+    UI.badge.innerText = currentState.replace('_', ' ');
+    // Change UI feedback based on state
+    if (currentState === 'MANUAL_WAIT') {
+        UI.map.style.cursor = 'crosshair';
+        UI.btnManual.style.background = '#EE5253'; // Highlight button
+    } else {
+        UI.map.style.cursor = '';
+        UI.btnManual.style.background = '';
+    }
 }
 
 UI.btnLocate.addEventListener('click', () => {
     currentState = 'AUTO_GPS';
+    if (userCoords) activeCoords = userCoords;
     updateBadge();
+    updateVisualMarkers();
     if (userCoords) map.setView(userCoords, 16);
 });
 
 UI.btnManual.addEventListener('click', () => {
-    currentState = 'MANUAL_SELECT';
+    currentState = 'MANUAL_WAIT';
     updateBadge();
-    alert("請在畫面上點選您的位置");
+    updateVisualMarkers(); // This will hide the red dot
 });
 
 window.onload = initMap;
