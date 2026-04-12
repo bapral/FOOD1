@@ -18,6 +18,9 @@ body, html {
 }
 
 #map {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     z-index: 1;
@@ -49,17 +52,27 @@ body, html {
     cursor: pointer;
 }
 
+.title-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
 .title-group h1 {
     margin: 0;
     font-size: 1.2rem;
     font-weight: 900;
+    letter-spacing: -0.5px;
     text-transform: uppercase;
+    line-height: 1;
 }
 
 .sub-title {
     font-size: 0.75rem;
     font-weight: bold;
-    opacity: 0.7;
+    opacity: 0.8;
+    line-height: 1;
 }
 
 .status-text {
