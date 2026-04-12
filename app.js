@@ -93,17 +93,53 @@ function updateVisualMarkers() {
     }
 }
 
+// Haversine formula to calculate distance in km
+function getDistance(coords1, coords2) {
+    const [lat1, lon1] = coords1;
+    const [lat2, lon2] = coords2;
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+function findNearestStore() {
+    if (!activeCoords || foodData.length === 0) return;
+
+    let minDest = Infinity;
+    let nearest = null;
+
+    foodData.forEach(item => {
+        if (item.lat && item.lng) {
+            const dist = getDistance(activeCoords, [item.lat, item.lng]);
+            if (dist < minDest) {
+                minDest = dist;
+                nearest = item;
+            }
+        }
+    });
+
+    if (nearest) {
+        console.log(`Nearest store: ${nearest.name} (${minDest.toFixed(2)} km)`);
+        showDetails(nearest, false); // Show details but don't force re-centering if in Auto GPS
+    }
+}
+
 function onMapClick(e) {
     if (currentState === 'MANUAL_WAIT') {
         activeCoords = [e.latlng.lat, e.latlng.lng];
         currentState = 'LOCKED';
         updateBadge();
         updateVisualMarkers();
-        // Calculate nearest if needed, or just lock
+        findNearestStore(); // Find nearest after manual lock
     }
 }
 
-function showDetails(item) {
+function showDetails(item, shouldFitBounds = true) {
     // When clicking a store, we lock the view but keep the current positioning mode
     document.getElementById('store-name').innerText = item.name;
     document.getElementById('store-address').innerText = item.address;
@@ -124,7 +160,9 @@ function showDetails(item) {
             dashArray: '10, 10'
         }).addTo(map);
         
-        map.fitBounds(polyline.getBounds(), { padding: [100, 100] });
+        if (shouldFitBounds) {
+            map.fitBounds(polyline.getBounds(), { padding: [100, 100] });
+        }
     }
 }
 
