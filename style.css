@@ -1,10 +1,9 @@
 :root {
     --primary: #fbc531; /* 深黃背景 */
     --dark: #2f3640;    /* 深黑文字/邊框 */
-    --text: #2f3640;
     --white: #ffffff;
     --accent: #192a56;  /* 深藍按鈕/路牌 */
-    --marker-bg: #e1b12c;
+    --accent-light: #273c75;
 }
 
 body, html {
@@ -61,10 +60,11 @@ body, html {
     font-weight: 900;
 }
 
+/* Control Buttons (Dark Blue Rectangles) */
 .controls {
     position: absolute;
     right: 15px;
-    bottom: 120px;
+    bottom: 140px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -74,22 +74,44 @@ body, html {
 .controls button {
     width: 54px;
     height: 54px;
-    border-radius: 8px;
-    border: 3px solid var(--dark);
-    background: var(--primary);
-    color: var(--dark);
-    font-size: 1.6rem;
+    border-radius: 12px;
+    border: 3px solid var(--white);
+    background: var(--accent);
+    color: var(--white);
     cursor: pointer;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 8px;
     transition: all 0.1s;
 }
 
+.controls button svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
 .controls button:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+    transform: scale(0.9);
+}
+
+/* Marker Style (Deep Blue Rounded Rectangle "Street Sign") */
+.food-marker-icon {
+    background: var(--accent);
+    border: 2px solid var(--white);
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-marker-icon svg {
+    width: 70%;
+    height: 70%;
+    fill: white;
 }
 
 .panel {
@@ -104,6 +126,7 @@ body, html {
     pointer-events: auto;
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.2);
 }
 
 .panel.visible {
@@ -116,7 +139,7 @@ body, html {
     background: var(--dark);
     border-radius: 3px;
     margin: 0 auto 20px;
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
 .panel h2 {
@@ -160,13 +183,6 @@ body, html {
     background: var(--primary);
     color: var(--dark);
     box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
-}
-
-.food-marker-icon {
-    background: var(--accent);
-    border: 3px solid var(--white);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .hidden {
