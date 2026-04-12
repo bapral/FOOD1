@@ -13,12 +13,16 @@
     <div id="map"></div>
     
     <div id="ui-overlay">
-        <div id="top-header" class="top-bar clickable">
+        <!-- 頂部標題與狀態列 -->
+        <div class="top-bar">
             <div class="title-group">
                 <h1>ALMA FOOD MAP</h1>
-                <span class="sub-title">點此手動定位</span>
+                <span class="sub-title">Food Finder App</span>
             </div>
-            <div id="status-display" class="status-text">自動 GPS 定位</div>
+            <div class="top-right-group">
+                <button id="btn-manual-top" class="btn-manual-mode">手動定位</button>
+                <div id="status-display" class="status-badge-new">自動 GPS 定位</div>
+            </div>
         </div>
         
         <div class="controls">
