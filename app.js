@@ -71,8 +71,9 @@ function renderMarkers() {
         if (item.lat && item.lng) {
             const marker = L.marker([item.lat, item.lng], {
                 icon: L.divIcon({
-                    className: 'food-marker',
-                    html: `<div style="background:#FF9F43; width:12px; height:12px; border-radius:50%; border:2px solid #2F3640;"></div>`
+                    className: 'food-marker-icon',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
                 })
             }).addTo(map);
 
@@ -94,17 +95,17 @@ function showDetails(item) {
     UI.panel.classList.remove('hidden');
     setTimeout(() => UI.panel.classList.add('visible'), 10);
 
-    // Draw Navigation Line
+    // Draw Navigation Line (Matching TOILETS style: bright and dashed)
     if (userCoords && item.lat) {
         if (polyline) map.removeLayer(polyline);
         polyline = L.polyline([userCoords, [item.lat, item.lng]], {
-            color: '#FF9F43',
-            weight: 4,
-            opacity: 0.6,
+            color: '#192a56',
+            weight: 5,
+            opacity: 0.8,
             dashArray: '10, 10'
         }).addTo(map);
         
-        map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+        map.fitBounds(polyline.getBounds(), { padding: [100, 100] });
     }
 }
 
