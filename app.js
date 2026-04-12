@@ -125,10 +125,27 @@ function updateUI() {
 
 UI.btnLocate.addEventListener('click', () => {
     currentState = 'AUTO_GPS';
-    if (userCoords) activeCoords = userCoords;
     updateUI();
-    updateVisualMarkers();
-    if (userCoords) map.setView(userCoords, 16);
+    
+    // 主動請求一次定位，解決 watchPosition 在某些瀏覽器（如無痕）反應慢的問題
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const { latitude, longitude } = pos.coords;
+            userCoords = [latitude, longitude];
+            activeCoords = userCoords;
+            updateVisualMarkers();
+            map.setView(userCoords, 16);
+        }, (err) => {
+            console.error("定位失敗:", err);
+            alert("無法取得您的位置，請確認瀏覽器已開啟定位權限。");
+        }, { enableHighAccuracy: true });
+    }
+    
+    if (userCoords) {
+        activeCoords = userCoords;
+        updateVisualMarkers();
+        map.setView(userCoords, 16);
+    }
 });
 
 UI.btnNearest.addEventListener('click', () => {

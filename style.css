@@ -83,9 +83,9 @@ body, html {
 }
 
 .status-badge-new {
-    background: var(--dark);
-    color: var(--primary);
-    padding: 4px 8px;
+    background: transparent;
+    color: var(--dark);
+    padding: 4px 0;
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 900;
@@ -94,9 +94,9 @@ body, html {
 }
 
 .status-badge-new.waiting-state {
-    background: transparent;
-    color: var(--dark);
-    padding: 4px 0; /* 移除 padding 讓它看起來更像純文字 */
+    background: var(--dark);
+    color: var(--primary);
+    padding: 4px 8px;
 }
 
 /* Control Buttons */
