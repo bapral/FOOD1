@@ -18,6 +18,8 @@ function initMap() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
     map.on('click', onMapClick);
     fetch('food_data.json').then(res => res.json()).then(data => { foodData = data; renderMarkers(); });
+    
+    updateUI(); // 確保開場時狀態顯示正確
     startLocationWatch();
 }
 
