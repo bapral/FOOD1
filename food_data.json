@@ -1,0 +1,35 @@
+[
+  {
+    "name": "連珍糕餅店",
+    "address": "基隆市仁愛區愛二路42號",
+    "phone": "02-24223676",
+    "hours": "8:00–21:00",
+    "link": "https://almablog.tw/blog/post/lenjen",
+    "lat": 25.1283,
+    "lng": 121.7419,
+    "city": "基隆市",
+    "district": "仁愛區"
+  },
+  {
+    "name": "李家鍋貼饅頭",
+    "address": "基隆市仁愛區孝三路99巷3弄2號",
+    "phone": "02-24242099",
+    "hours": "5:30–18:00",
+    "link": "https://almablog.tw/blog/post/rely-fried-buns",
+    "lat": 25.1301,
+    "lng": 121.7395,
+    "city": "基隆市",
+    "district": "仁愛區"
+  },
+  {
+    "name": "坐著做。海鮮丼飯專門店",
+    "address": "桃園市中壢區九和一街18號2樓之5",
+    "phone": "03 422 0605",
+    "hours": "11:30–14:30, 17:30–21:00",
+    "link": "https://almablog.tw/blog/post/zuozhezuo",
+    "lat": 24.9625,
+    "lng": 121.2239,
+    "city": "桃園市",
+    "district": "中壢區"
+  }
+]
