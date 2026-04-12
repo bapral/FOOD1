@@ -94,9 +94,9 @@ body, html {
 }
 
 .status-badge-new.waiting-state {
-    background: var(--dark);
-    color: var(--primary);
-    padding: 4px 8px;
+    background: transparent;
+    color: var(--dark);
+    padding: 4px 0;
 }
 
 /* Control Buttons */
