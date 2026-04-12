@@ -145,7 +145,8 @@ body, html {
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--primary);
+    background: var(--white);
+    color: var(--dark);
     border-top: 5px solid var(--dark);
     padding: 15px 15px 30px;
     pointer-events: auto;
@@ -157,20 +158,42 @@ body, html {
     transform: translateY(0);
 }
 
+.drag-handle {
+    width: 40px;
+    height: 5px;
+    background: #ccc;
+    border-radius: 10px;
+    margin: 0 auto 15px;
+}
+
+.panel-content h2 {
+    margin: 0 0 10px;
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
 .selectable {
     user-select: all;
     -webkit-user-select: all;
 }
+.store-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    color: var(--dark);
+    font-weight: 500;
+}
 
-.address {
-    font-size: 1rem;
-    margin-bottom: 15px;
+.phone-info {
+    font-weight: 900;
+    color: var(--accent);
 }
 
 .actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .btn {
@@ -180,8 +203,8 @@ body, html {
     border-radius: 8px;
     font-weight: 900;
     border: 3px solid var(--dark);
+    display: block;
 }
-
 .btn-primary {
     background: var(--accent);
     color: var(--white);

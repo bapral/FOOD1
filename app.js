@@ -74,7 +74,7 @@ function showDetails(item, shouldFit, lineColor) {
     document.getElementById('store-name').innerText = item.name;
     document.getElementById('store-address').innerText = item.address;
     document.getElementById('store-hours').innerText = item.hours || "暫無營業時間";
-    document.getElementById('btn-call').href = `tel:${item.phone}`;
+    document.getElementById('store-phone').innerText = item.phone ? `電話：${item.phone}` : "暫無電話";
     document.getElementById('btn-link').href = item.link;
 
     if (activeCoords) {
@@ -102,6 +102,14 @@ function onMapClick(e) {
         currentState = 'LOCKED';
         updateUI();
         updateVisualMarkers();
+    }
+    hideDetails();
+}
+
+function hideDetails() {
+    if (UI.panel.classList.contains('visible')) {
+        UI.panel.classList.remove('visible');
+        setTimeout(() => UI.panel.classList.add('hidden'), 300); // 等待收合動畫結束
     }
 }
 
