@@ -72,11 +72,14 @@ body, html {
     background: var(--accent);
     color: var(--white);
     border: 2px solid var(--dark);
-    padding: 4px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 900;
     cursor: pointer;
+    text-transform: none; /* 防止被轉成大寫或亂碼 */
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1;
 }
 
 .status-badge-new {
