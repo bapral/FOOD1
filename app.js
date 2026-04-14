@@ -3,6 +3,7 @@ let foodData = [];
 let currentState = 'AUTO_GPS'; // AUTO_GPS, MANUAL_WAIT, LOCKED
 let userCoords = null; 
 let activeCoords = null;
+let isFollowing = true;
 
 const UI = {
     status: document.getElementById('status-display'),
@@ -17,6 +18,7 @@ function initMap() {
     map = L.map('map', { zoomControl: false, attributionControl: false }).setView([23.6, 121], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
     map.on('click', onMapClick);
+    map.on('dragstart', () => { isFollowing = false; });
     fetch('food_data.json').then(res => res.json()).then(data => { foodData = data; renderMarkers(); });
     
     updateUI(); // 確保開場時狀態顯示正確
@@ -28,7 +30,10 @@ function startLocationWatch() {
         navigator.geolocation.watchPosition((pos) => {
             const { latitude, longitude } = pos.coords;
             userCoords = [latitude, longitude];
-            if (currentState === 'AUTO_GPS') { activeCoords = userCoords; map.setView(userCoords, 16); }
+            if (currentState === 'AUTO_GPS') { 
+                activeCoords = userCoords; 
+                if (isFollowing) map.setView(userCoords, 16); 
+            }
             updateVisualMarkers();
         }, (err) => console.error(err), { enableHighAccuracy: true });
     }
@@ -133,6 +138,7 @@ function updateUI() {
 
 UI.btnLocate.addEventListener('click', () => {
     currentState = 'AUTO_GPS';
+    isFollowing = true;
     updateUI();
     
     // 主動請求一次定位，解決 watchPosition 在某些瀏覽器（如無痕）反應慢的問題
