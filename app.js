@@ -11,6 +11,8 @@ const UI = {
     btnLocate: document.getElementById('btn-locate'),
     btnNearest: document.getElementById('btn-nearest'),
     btnManualTop: document.getElementById('btn-manual-top'),
+    btnHelp: document.getElementById('btn-help'),
+    helpModal: document.getElementById('help-modal'),
     map: document.getElementById('map')
 };
 
@@ -176,6 +178,16 @@ UI.btnManualTop.addEventListener('click', () => {
     currentState = 'MANUAL_WAIT';
     updateUI();
     updateVisualMarkers();
+});
+
+UI.btnHelp.addEventListener('click', () => {
+    UI.helpModal.classList.add('visible');
+});
+
+UI.helpModal.addEventListener('click', (e) => {
+    if (e.target === UI.helpModal || e.target.classList.contains('close-modal')) {
+        UI.helpModal.classList.remove('visible');
+    }
 });
 
 if ('serviceWorker' in navigator) {

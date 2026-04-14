@@ -23,8 +23,23 @@
                 <span class="sub-title">Food Finder App</span>
             </div>
             <div class="top-right-group">
+                <button id="btn-help" class="btn-help" title="使用說明">?</button>
                 <button id="btn-manual-top" class="btn-manual-mode">手動定位</button>
                 <div id="status-display" class="status-badge-new">自動 GPS 定位</div>
+            </div>
+        </div>
+
+        <!-- 使用說明 Modal -->
+        <div id="help-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>使用說明</h2>
+                <div class="help-body">
+                    <p><strong>自動定位：</strong> 預設開啟，地圖會跟隨您的 GPS 位置。</p>
+                    <p><strong>手動定位：</strong> 點擊上方按鈕後，點擊地圖任一點可設定虛擬位置。</p>
+                    <p><strong>最近目標：</strong> 點擊右側箭頭按鈕，自動找尋離您最近的美食點。</p>
+                    <p><strong>自由瀏覽：</strong> 拖動地圖會停止自動跟隨，點擊右下角準星按鈕可重新恢復跟隨。</p>
+                </div>
             </div>
         </div>
 

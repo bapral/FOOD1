@@ -64,9 +64,9 @@ body, html {
 
 .top-right-group {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 5px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-manual-mode {
@@ -233,4 +233,84 @@ body, html {
 
 .hidden {
     display: none;
+}
+
+/* 使用說明相關樣式 */
+.btn-help {
+    background: var(--accent);
+    color: white;
+    border: 2px solid var(--dark);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    pointer-events: auto;
+}
+
+.modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+.modal.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 16px;
+    width: 85%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: 3px solid var(--dark);
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--dark);
+    cursor: pointer;
+}
+
+.help-body h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 900;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 10px;
+}
+
+.help-body p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: var(--dark);
+}
+
+.help-body strong {
+    color: var(--accent);
 }
