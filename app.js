@@ -1,4 +1,5 @@
-let map, userMarker, manualMarker, polyline;
+let map, userMarker, manualMarker;
+let nearestPolyline, selectedPolyline; // 分開儲存兩種線條
 let foodData = [];
 let currentState = 'AUTO_GPS'; // AUTO_GPS, MANUAL_WAIT, LOCKED
 let userCoords = null; 
@@ -71,7 +72,7 @@ function renderMarkers() {
             }).addTo(map).on('click', () => {
                 const navLineColor = item.link.includes('nash.tw') ? '#192a56' : 
                                     (item.link.includes('almablog.tw') ? '#fbc531' : '#e67e22');
-                showDetails(item, true, navLineColor);
+                showDetails(item, true, navLineColor, 'selected');
             });
         }
     });
@@ -85,7 +86,7 @@ function getDistance(coords1, coords2) {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function showDetails(item, shouldFit, lineColor) {
+function showDetails(item, shouldFit, lineColor, type) {
     document.getElementById('store-name').innerText = item.name;
     document.getElementById('store-address').innerText = item.address;
     document.getElementById('store-hours').innerText = item.hours || "暫無營業時間";
@@ -104,19 +105,25 @@ function showDetails(item, shouldFit, lineColor) {
         const dist = getDistance(activeCoords, [item.lat, item.lng]);
         document.getElementById('store-distance').innerText = dist.toFixed(2) + " km";
         document.getElementById('store-time').innerText = `約 ${Math.round(dist / 5 * 60)} 分鐘`;
-        drawNavigationLine(activeCoords, [item.lat, item.lng], lineColor, shouldFit);
+        drawNavigationLine(activeCoords, [item.lat, item.lng], lineColor, shouldFit, type);
     }
     UI.panel.classList.remove('hidden');
     setTimeout(() => UI.panel.classList.add('visible'), 10);
 }
 
-function drawNavigationLine(start, end, color, shouldFit) {
-    if (polyline) map.removeLayer(polyline);
-    polyline = L.layerGroup().addTo(map);
-    // 底層寬線（外框感）
-    L.polyline([start, end], { color: '#ffffff', weight: 8, opacity: 0.7 }).addTo(polyline);
-    // 主色實線
-    L.polyline([start, end], { color: color, weight: 5, opacity: 0.9 }).addTo(polyline);
+function drawNavigationLine(start, end, color, shouldFit, type) {
+    // 根據類型選擇要清除並重新繪製的線條
+    if (type === 'nearest') {
+        if (nearestPolyline) map.removeLayer(nearestPolyline);
+        nearestPolyline = L.layerGroup().addTo(map);
+        L.polyline([start, end], { color: '#ffffff', weight: 8, opacity: 0.7 }).addTo(nearestPolyline);
+        L.polyline([start, end], { color: color, weight: 5, opacity: 0.9 }).addTo(nearestPolyline);
+    } else {
+        if (selectedPolyline) map.removeLayer(selectedPolyline);
+        selectedPolyline = L.layerGroup().addTo(map);
+        L.polyline([start, end], { color: '#ffffff', weight: 8, opacity: 0.7 }).addTo(selectedPolyline);
+        L.polyline([start, end], { color: color, weight: 5, opacity: 0.9 }).addTo(selectedPolyline);
+    }
     
     if (shouldFit) map.fitBounds(L.latLngBounds([start, end]), { padding: [100, 100] });
 }
@@ -125,6 +132,7 @@ function onMapClick(e) {
     if (currentState === 'MANUAL_WAIT') {
         activeCoords = [e.latlng.lat, e.latlng.lng];
         currentState = 'LOCKED';
+        clearAllLines(); // 手動定位位置改變，清除所有舊線
         updateUI();
         updateVisualMarkers();
     }
@@ -134,8 +142,15 @@ function onMapClick(e) {
 function hideDetails() {
     if (UI.panel.classList.contains('visible')) {
         UI.panel.classList.remove('visible');
-        setTimeout(() => UI.panel.classList.add('hidden'), 300); // 等待收合動畫結束
+        setTimeout(() => UI.panel.classList.add('hidden'), 300);
     }
+}
+
+function clearAllLines() {
+    if (nearestPolyline) map.removeLayer(nearestPolyline);
+    if (selectedPolyline) map.removeLayer(selectedPolyline);
+    nearestPolyline = null;
+    selectedPolyline = null;
 }
 
 function updateUI() {
@@ -146,7 +161,6 @@ function updateUI() {
     };
     if (UI.status) {
         UI.status.innerText = texts[currentState];
-        // Toggle specific style for MANUAL_WAIT
         if (currentState === 'MANUAL_WAIT') {
             UI.status.classList.add('waiting-state');
         } else {
@@ -159,9 +173,9 @@ function updateUI() {
 UI.btnLocate.addEventListener('click', () => {
     currentState = 'AUTO_GPS';
     isFollowing = true;
+    clearAllLines(); // 重新定位，清除舊線
     updateUI();
     
-    // 主動請求一次定位，解決 watchPosition 在某些瀏覽器（如無痕）反應慢的問題
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition((pos) => {
             const { latitude, longitude } = pos.coords;
@@ -189,7 +203,7 @@ UI.btnNearest.addEventListener('click', () => {
         const d = getDistance(activeCoords, [item.lat, item.lng]);
         if (d < min) { min = d; nearest = item; }
     });
-    if (nearest) showDetails(nearest, true, '#4cd137');
+    if (nearest) showDetails(nearest, true, '#4cd137', 'nearest');
 });
 
 UI.btnManualTop.addEventListener('click', () => {
