@@ -70,7 +70,7 @@ function renderMarkers() {
             L.marker([item.lat, item.lng], {
                 icon: L.divIcon({ className: markerClass, html: foodIconSvg, iconSize: [24, 24], iconAnchor: [12, 12] })
             }).addTo(map).on('click', () => {
-                const navLineColor = item.link.includes('nash.tw') ? '#001f3f' : 
+                const navLineColor = item.link.includes('nash.tw') ? '#000080' : 
                                     (item.link.includes('almablog.tw') ? '#fbc531' : '#e67e22');
                 showDetails(item, true, navLineColor, 'selected');
             });
