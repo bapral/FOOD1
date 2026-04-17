@@ -217,13 +217,17 @@ body, html {
 }
 
 .food-marker-icon {
-    background: var(--accent);
     border: 2px solid var(--white);
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #7f8c8d; /* 預設灰色 */
 }
+
+/* 不同來源的標示顏色 */
+.marker-nash { background: #1e90ff !important; } /* 藍色 */
+.marker-alma { background: #fbc531 !important; } /* 深黃色 */
 
 .food-marker-icon svg {
     width: 70%;
@@ -234,6 +238,10 @@ body, html {
 .hidden {
     display: none;
 }
+
+/* 來源按鈕樣式 */
+.btn-nash { background: #1e90ff !important; color: white !important; }
+.btn-alma { background: #fbc531 !important; color: var(--dark) !important; }
 
 /* 使用說明相關樣式 */
 .btn-help {

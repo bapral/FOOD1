@@ -82,7 +82,15 @@ function showDetails(item, shouldFit, lineColor) {
     document.getElementById('store-address').innerText = item.address;
     document.getElementById('store-hours').innerText = item.hours || "暫無營業時間";
     document.getElementById('store-phone').innerText = item.phone ? `電話：${item.phone}` : "暫無電話";
-    document.getElementById('btn-link').href = item.link;
+    
+    const btnLink = document.getElementById('btn-link');
+    btnLink.href = item.link;
+    
+    // 根據網域設定按鈕顏色
+    btnLink.className = 'btn'; // 重設 class
+    if (item.link.includes('nash.tw')) btnLink.classList.add('btn-nash');
+    else if (item.link.includes('almablog.tw')) btnLink.classList.add('btn-alma');
+    else btnLink.classList.add('btn-secondary');
 
     if (activeCoords) {
         const dist = getDistance(activeCoords, [item.lat, item.lng]);
