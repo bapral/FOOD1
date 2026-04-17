@@ -54,7 +54,7 @@ function updateVisualMarkers() {
     } else if (userMarker) map.removeLayer(userMarker);
 
     if (activeCoords && currentState === 'LOCKED') {
-        if (!manualMarker) manualMarker = L.marker(activeCoords, { icon: createPinIcon('#192a56') }).addTo(map);
+        if (!manualMarker) manualMarker = L.marker(activeCoords, { icon: createPinIcon('#000080') }).addTo(map);
         else manualMarker.setLatLng(activeCoords).addTo(map);
     } else if (manualMarker) map.removeLayer(manualMarker);
 }
