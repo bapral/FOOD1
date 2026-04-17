@@ -226,7 +226,7 @@ body, html {
 }
 
 /* 不同來源的標示顏色 */
-.marker-nash { background: #1e90ff !important; } /* 藍色 */
+.marker-nash { background: #192a56 !important; } /* 深藍色 */
 .marker-alma { background: #fbc531 !important; } /* 深黃色 */
 
 .food-marker-icon svg {
@@ -240,7 +240,7 @@ body, html {
 }
 
 /* 來源按鈕樣式 */
-.btn-nash { background: #1e90ff !important; color: white !important; }
+.btn-nash { background: #192a56 !important; color: white !important; }
 .btn-alma { background: #fbc531 !important; color: var(--dark) !important; }
 
 /* 使用說明相關樣式 */
