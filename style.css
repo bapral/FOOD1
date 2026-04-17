@@ -1,9 +1,9 @@
-/* Version 1.6 - Fix cache inconsistency */
+/* Version 1.8 - Fix CSS syntax error and darken Nash blue */
 :root {
     --primary: #fbc531; /* 深黃背景 */
     --dark: #2f3640;    /* 深黑文字/邊框 */
     --white: #ffffff;
-    --accent: #192a56;  /* 深藍按鈕/路牌 */
+    --accent: #001f3f;  /* 更深邃的藍色 */
     --line-nearest: #4cd137; /* 最近目標：綠色 */
     --line-selected: #e67e22; /* 自選目標：橙色 */
 }
@@ -226,8 +226,8 @@ body, html {
 }
 
 /* 不同來源的標示顏色 */
-.marker-nash { background: #192a56 !important; } /* 深藍色 */
-.marker-alma { background: #fbc531 !important; } /* 深黃色 */
+.marker-nash { background: var(--accent) !important; } /* 深邃藍色 */
+.marker-alma { background: var(--primary) !important; } /* 深黃色 */
 
 .food-marker-icon svg {
     width: 70%;
@@ -240,8 +240,8 @@ body, html {
 }
 
 /* 來源按鈕樣式 */
-.btn-nash { background: #192a56 !important; color: white !important; }
-.btn-alma { background: #fbc531 !important; color: var(--dark) !important; }
+.btn-nash { background: var(--accent) !important; color: var(--white) !important; }
+.btn-alma { background: var(--primary) !important; color: var(--dark) !important; }
 
 /* 使用說明相關樣式 */
 .btn-help {
@@ -306,19 +306,6 @@ body, html {
     font-weight: 900;
     border-bottom: 2px solid var(--primary);
     padding-bottom: 10px;
-}
-
-.help-body p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-    font-size: 0.95rem;
-    color: var(--dark);
-}
-
-.help-body strong {
-    color: var(--accent);
-}
-10px;
 }
 
 .help-body p {
