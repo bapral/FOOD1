@@ -113,9 +113,11 @@ function showDetails(item, shouldFit, lineColor) {
 function drawNavigationLine(start, end, color, shouldFit) {
     if (polyline) map.removeLayer(polyline);
     polyline = L.layerGroup().addTo(map);
-    L.polyline([start, end], { color: color, weight: 10, opacity: 0.2 }).addTo(polyline);
-    L.polyline([start, end], { color: color, weight: 4, opacity: 0.8, dashArray: '10, 15' }).addTo(polyline);
-    L.polyline([start, end], { color: '#ffffff', weight: 2, opacity: 0.5 }).addTo(polyline);
+    // 底層寬線（外框感）
+    L.polyline([start, end], { color: '#ffffff', weight: 8, opacity: 0.7 }).addTo(polyline);
+    // 主色實線
+    L.polyline([start, end], { color: color, weight: 5, opacity: 0.9 }).addTo(polyline);
+    
     if (shouldFit) map.fitBounds(L.latLngBounds([start, end]), { padding: [100, 100] });
 }
 
