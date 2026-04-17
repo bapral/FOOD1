@@ -181,12 +181,12 @@ UI.btnManualTop.addEventListener('click', () => {
 });
 
 UI.btnHelp.addEventListener('click', () => {
-    UI.helpModal.classList.add('visible');
+    UI.helpModal.classList.remove('hidden');
 });
 
 UI.helpModal.addEventListener('click', (e) => {
     if (e.target === UI.helpModal || e.target.classList.contains('close-modal')) {
-        UI.helpModal.classList.remove('visible');
+        UI.helpModal.classList.add('hidden');
     }
 });
 

@@ -264,15 +264,11 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
     pointer-events: auto;
 }
 
-.modal.visible {
-    opacity: 1;
-    visibility: visible;
+.modal.hidden {
+    display: none;
 }
 
 .modal-content {
@@ -302,6 +298,19 @@ body, html {
     font-weight: 900;
     border-bottom: 2px solid var(--primary);
     padding-bottom: 10px;
+}
+
+.help-body p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: var(--dark);
+}
+
+.help-body strong {
+    color: var(--accent);
+}
+10px;
 }
 
 .help-body p {
