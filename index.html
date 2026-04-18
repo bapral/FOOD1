@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>美食地圖</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css?v=2.0" />
+    <link rel="stylesheet" href="style.css?v=2.1" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -18,14 +18,15 @@
     <div id="ui-overlay">
         <!-- 頂部標題與狀態列 -->
         <div class="top-bar">
-            <div class="title-group">
+            <div class="top-bar-left">
                 <h1>FOOD MAP</h1>
-                <span class="sub-title">Food Finder App</span>
-            </div>
-            <div class="top-right-group">
                 <button id="btn-help" class="btn-help" title="使用說明">?</button>
-                <button id="btn-manual-top" class="btn-manual-mode">手動定位</button>
+            </div>
+            <div class="top-bar-center">
                 <div id="status-display" class="status-badge-new">自動 GPS 定位</div>
+            </div>
+            <div class="top-bar-right">
+                <button id="btn-manual-top" class="btn-manual-mode">手動定位</button>
             </div>
         </div>
 
@@ -76,5 +77,5 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="app.js?v=2.0"></script>
+    <script src="app.js?v=2.1"></script>
     </body></html>

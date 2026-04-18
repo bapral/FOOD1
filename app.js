@@ -64,14 +64,21 @@ function renderMarkers() {
     foodData.forEach(item => {
         if (item.lat && item.lng) {
             let markerClass = 'food-marker-icon';
-            if (item.link && item.link.includes('nash.tw')) markerClass += ' marker-nash';
-            else if (item.link && item.link.includes('almablog.tw')) markerClass += ' marker-alma';
+            const link = (item.link || "").toLowerCase();
+            
+            if (link.includes('nash.tw')) markerClass += ' marker-nash';
+            else if (link.includes('almablog.tw')) markerClass += ' marker-alma';
             
             L.marker([item.lat, item.lng], {
-                icon: L.divIcon({ className: markerClass, html: foodIconSvg, iconSize: [24, 24], iconAnchor: [12, 12] })
+                icon: L.divIcon({ 
+                    className: markerClass, 
+                    html: foodIconSvg, 
+                    iconSize: [24, 24], 
+                    iconAnchor: [12, 12] 
+                })
             }).addTo(map).on('click', () => {
-                const navLineColor = item.link.includes('nash.tw') ? '#000080' : 
-                                    (item.link.includes('almablog.tw') ? '#fbc531' : '#e67e22');
+                const navLineColor = link.includes('nash.tw') ? '#000033' : 
+                                    (link.includes('almablog.tw') ? '#fbc531' : '#e67e22');
                 showDetails(item, true, navLineColor, 'selected');
             });
         }
