@@ -1,9 +1,9 @@
-const CACHE_NAME = 'food-map-v1.6';
+const CACHE_NAME = 'food-map-v2.1';
 const ASSETS = [
   './',
   './index.html',
-  './style.css?v=1.6',
-  './app.js?v=1.6',
+  './style.css?v=2.1',
+  './app.js?v=2.1',
   './food_data.json',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
