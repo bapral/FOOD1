@@ -1,6 +1,6 @@
 {
-  "name": "Food Finder App",
-  "short_name": "Food Map",
+  "name": "美食地圖",
+  "short_name": "美食地圖",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
